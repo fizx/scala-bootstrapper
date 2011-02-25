@@ -1,0 +1,2 @@
+#!/usr/bin/env ruby
+exec "java","-Xmx2g", "-XX:+CMSClassUnloadingEnabled", "-XX:MaxPermSize=256m", "-jar", File.dirname(__FILE__) + "/../vendor/sbt-launch-0.7.4.jar", *ARGV

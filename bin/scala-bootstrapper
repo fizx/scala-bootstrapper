@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+if ARGV.length < 1 
+  puts "Usage: #{$0} [public] PROJECT_NAME"
+  exit 1
+end
+
+class String
+  def camelize(first_letter_in_uppercase = false)
+    if first_letter_in_uppercase
+      gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
+    else
+      self[0].chr.downcase + camelize(self)[1..-1]
+    end
+  end    
+end
+
+def gsub_birds(haystack, name)
+  haystack.gsub("BirdName", name).gsub("birdname", name.downcase)
+end
+
+require "erb"
+require "fileutils"
+include FileUtils
+
+project_name = ARGV.pop
+is_public = ARGV.pop == "public"
+
+target_root = File.expand_path(".")
+root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
+
+Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
+  relative = path.sub("#{root}/", "")
+  content = File.read(path)
+  template = ERB.new(content, nil, nil, "@output")
+  target_path = gsub_birds(File.join(target_root, relative), project_name).sub(/\.erb$/, '')
+  if File.exists?(target_path) && !$overwrite_all
+    print "File exists `#{relative}`, replace? ([Y]es, [N]o, [A]ll, [Q]uit)"
+    $stdout.flush
+    case STDIN.gets
+    when /^y/i: # continue
+    when /^n/i: next
+    when /^a/i: $overwrite_all = true
+    when /^q/i: exit(2)
+    else
+      retry
+    end
+  end
+  puts "writing #{relative.sub(/\.erb$/, '')}"
+  mkdir_p(File.dirname(target_path))
+  File.open(target_path, "w") {|f| f.print(gsub_birds(template.result(binding), project_name)) }
+end

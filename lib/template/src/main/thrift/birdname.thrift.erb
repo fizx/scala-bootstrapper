@@ -1,0 +1,12 @@
+namespace java com.twitter.birdname.thrift
+namespace rb BirdName
+
+exception BirdNameException {
+  1: string description
+}
+
+service BirdNameService {
+  // TODO: Please implement
+  
+  string hello() throws throws(1: BirdNameException ex)
+}

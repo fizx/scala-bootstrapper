@@ -1,19 +1,19 @@
-package com.twitter.addressbook
+package com.twitter.birdname
 
 import org.specs.Specification
 import com.twitter.admin._
 
 class BirdNameServiceSpec extends Specification {
-  System.setProperty("stage", "test")  
-  val env = RuntimeEnvironment(this, Array())
+  val env = RuntimeEnvironment(this, Array("-f", "config/test.scala"))
   val impl = env.loadRuntimeConfig[BirdNameService]
+  ServiceTracker.shutdown
 
   "BirdNameService" should {
 
     // TODO: Please implement
 
     "hello world" in {
-      impl.hello.get mustEqual "world"
+      impl.hello.get() mustEqual "world"
     }
   }
 }

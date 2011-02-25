@@ -1,14 +1,15 @@
 package com.twitter.birdname
 
-import org.slf4j._
 import com.twitter.util._
 
-class BirdNameServiceImpl(config: BirdNameServiceConfiguration) extends BirdNameService {
-  val log = LoggerFactory.getLogger(getClass)
+class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService {
+  val serverName = "BirdName"
+  val thriftPort = config.thriftPort
   
   // TODO: Please implement
   
   def hello() = {
     Future("world")
   }
+
 }

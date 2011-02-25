@@ -6,8 +6,7 @@ object Main {
   def main(args: Array[String]) {
     val env = RuntimeEnvironment(this, args)
     val impl = env.loadRuntimeConfig[BirdNameService]
-    val thriftImpl = new thrift.BirdNameService.Service(impl.toThrift, cfg.thriftProtocolFactory)
-    new ThriftServerWithOstrichAdmin(env, cfg, thriftImpl).run
+    impl.start
   }
 }
 

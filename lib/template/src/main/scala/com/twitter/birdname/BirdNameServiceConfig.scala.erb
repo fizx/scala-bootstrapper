@@ -1,7 +1,14 @@
 package com.twitter.birdname
 
+import com.twitter.admin.config._
 import com.twitter.admin._
 
 class BirdNameServiceConfig extends ServerConfig[BirdNameService] {
+  
+  val thriftPort = 1337
+  admin.httpPort = Some(9999)
+  
+  def apply(env: RuntimeEnvironment) = new BirdNameServiceImpl(this)
+  
   // TODO: Please implement
 }

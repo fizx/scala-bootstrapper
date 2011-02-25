@@ -40,8 +40,7 @@ Gem::Specification.new do |s|
      "lib/template/src/main/scala/com/twitter/birdname/Main.scala.erb",
      "lib/template/src/main/thrift/birdname.thrift.erb",
      "lib/template/src/test/scala/com/twitter/birdname/BirdNameServiceSpec.scala",
-     "test/helper.rb",
-     "test/test_scala-bootstrapper.rb",
+     "scala-bootstrapper.gemspec",
      "vendor/sbt-launch-0.7.4.jar"
   ]
   s.homepage = %q{http://github.com/fizx/scala-bootstrapper}
@@ -49,10 +48,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Twitter scala project init}
-  s.test_files = [
-    "test/helper.rb",
-     "test/test_scala-bootstrapper.rb"
-  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

@@ -8,7 +8,17 @@ class BirdNameServiceConfig extends ServerConfig[BirdNameService] {
   val thriftPort = 1337
   admin.httpPort = Some(9999)
   
-  def apply(env: RuntimeEnvironment) = new BirdNameServiceImpl(this)
+  // TODO: Please implement application-specific config.
+
+  /**
+   * Used if you need to integrate synchronous clients, e.g. querulous. If you
+   * are using an async client like cassie, you can ignore this.
+   *
+   *     val threadPoolSize = 10
+   */
   
-  // TODO: Please implement
+  /**
+   * This is a factory method that will construct the related service.
+   */
+  def apply(env: RuntimeEnvironment) = new BirdNameServiceImpl(this)
 }

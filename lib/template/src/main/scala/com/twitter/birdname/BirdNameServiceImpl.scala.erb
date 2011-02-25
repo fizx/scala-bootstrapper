@@ -1,12 +1,27 @@
 package com.twitter.birdname
 
 import com.twitter.util._
+import java.util.concurrent._
 
 class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService {
   val serverName = "BirdName"
   val thriftPort = config.thriftPort
   
-  // TODO: Please implement
+  /**
+   * These services are based on finagle, which implements a nonblocking server.  If you 
+   * are making blocking rpc calls, it's really important that you run these actions in
+   * a thread pool, so that you don't block the main event loop.  This thread pool is only
+   * needed for these blocking actions.  The code looks like:
+   *
+   *     val futurePool = new FuturePool(Executors.newFixedThreadPool(config.threadPoolSize))
+   * 
+   *     def hello() = futurePool {
+   *       someService.blockingRpcCall
+   *     }
+   * 
+   */   
+    
+  // TODO: Please implement your api.  You should have already created your thrift definition.
   
   def hello() = {
     Future("world")

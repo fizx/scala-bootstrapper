@@ -23,7 +23,7 @@ require "erb"
 require "fileutils"
 include FileUtils
 
-project_name = ARGV.pop
+project_name = ARGV.pop.camelize(true)
 is_public = ARGV.pop == "public"
 
 root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")

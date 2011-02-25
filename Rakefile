@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "scala-bootstrapper"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Twitter scala project init}
+    gem.description = %Q{Twitter scala project init}
     gem.email = "kmaxwell@twitter.com"
     gem.homepage = "http://github.com/fizx/scala-bootstrapper"
     gem.authors = ["Kyle Maxwell"]

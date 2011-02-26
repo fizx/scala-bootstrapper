@@ -1,7 +1,17 @@
 #!/usr/bin/env ruby
 
+require File.dirname(__FILE__) + "/../vendor/trollop"
+
+opts = Trollop::options do
+  banner "Usage: #{$0} [options] PROJECT_NAME"
+  
+  opt :public, "Use the public twitter maven repo"  
+  opt :namespace, "Use something besides com.twitter", :type => :string
+end
+
+
 if ARGV.length < 1 
-  puts "Usage: #{$0} [public] PROJECT_NAME"
+  Trollop::die "PROJECT_NAME is required"
   exit 1
 end
 
@@ -15,8 +25,12 @@ class String
   end    
 end
 
-def gsub_birds(haystack, name)
-  haystack.gsub("BirdName", name).gsub("birdname", name.downcase)
+def gsub_birds(haystack, name, namespace)
+  haystack.
+    gsub("BirdName", name).
+    gsub("birdname", name.downcase).
+    gsub("com.twitter", namespace).
+    gsub("com/twitter", namespace.gsub(".", "/"))
 end
 
 require "erb"
@@ -24,7 +38,8 @@ require "fileutils"
 include FileUtils
 
 project_name = ARGV.pop.camelize(true)
-is_public = ARGV.pop == "public"
+is_public = opts[:public]
+namespace = opts[:namespace] || "com.twitter"
 
 root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
 
@@ -32,7 +47,7 @@ Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
   relative = path.sub("#{root}/", "")
   content = File.read(path)
   template = ERB.new(content, nil, nil, "@output")
-  target_path = gsub_birds(relative, project_name).sub(/\.erb$/, '')
+  target_path = gsub_birds(relative, project_name, namespace).sub(/\.erb$/, '')
   if File.exists?(target_path) && !$overwrite_all
     print "File exists `#{relative}`, replace? ([Y]es, [N]o, [A]ll, [Q]uit)"
     $stdout.flush
@@ -47,5 +62,5 @@ Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
   end
   puts "writing #{target_path}"
   mkdir_p(File.dirname(target_path))
-  File.open(target_path, "w") {|f| f.print(gsub_birds(template.result(binding), project_name)) }
+  File.open(target_path, "w") {|f| f.print(gsub_birds(template.result(binding), project_name, namespace)) }
 end

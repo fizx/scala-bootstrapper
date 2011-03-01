@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 $: << File.dirname(__FILE__) + "/../target/gen-rb"
+
 require "rubygems"
+require "bundler/setup"
+
 require "thrift"
 require "thrift_client"
 require "bird_name_service"

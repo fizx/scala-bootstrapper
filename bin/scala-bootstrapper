@@ -23,12 +23,20 @@ class String
       self[0].chr.downcase + camelize(self)[1..-1]
     end
   end    
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
 end
 
 def gsub_birds(haystack, name, namespace)
   haystack.
     gsub("BirdName", name).
     gsub("birdname", name.downcase).
+    gsub("bird_name", name.underscore).
     gsub("birdName", name.camelize).
     gsub("com.twitter", namespace).
     gsub("com/twitter", namespace.gsub(".", "/"))

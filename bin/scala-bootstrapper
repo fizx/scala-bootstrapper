@@ -29,6 +29,7 @@ def gsub_birds(haystack, name, namespace)
   haystack.
     gsub("BirdName", name).
     gsub("birdname", name.downcase).
+    gsub("birdName", name.camelize).
     gsub("com.twitter", namespace).
     gsub("com/twitter", namespace.gsub(".", "/"))
 end

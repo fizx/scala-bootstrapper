@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scala-bootstrapper}
-  s.version = "0.3.0"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kyle Maxwell"]
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "bin/sbt",
      "bin/scala-bootstrapper",
      "lib/template/.gitignore",
+     "lib/template/Gemfile",
      "lib/template/bin/console.erb",
      "lib/template/config/development.scala.erb",
      "lib/template/config/production.scala.erb",

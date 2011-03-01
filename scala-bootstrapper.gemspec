@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scala-bootstrapper}
-  s.version = "0.2.1"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kyle Maxwell"]
-  s.date = %q{2011-02-28}
+  s.date = %q{2011-03-01}
   s.description = %q{Twitter scala project init}
   s.email = %q{kmaxwell@twitter.com}
   s.executables = ["sbt", "scala-bootstrapper"]
@@ -39,7 +39,8 @@ Gem::Specification.new do |s|
      "lib/template/src/main/scala/com/twitter/birdname/BirdNameServiceImpl.scala.erb",
      "lib/template/src/main/scala/com/twitter/birdname/Main.scala.erb",
      "lib/template/src/main/thrift/birdname.thrift.erb",
-     "lib/template/src/test/scala/com/twitter/birdname/BirdNameServiceSpec.scala",
+     "lib/template/src/test/scala/com/twitter/birdname/AbstractSpec.scala.erb",
+     "lib/template/src/test/scala/com/twitter/birdname/BirdNameServiceSpec.scala.erb",
      "scala-bootstrapper.gemspec",
      "vendor/sbt-launch-0.7.4.jar",
      "vendor/trollop.rb"

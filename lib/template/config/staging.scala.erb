@@ -1,5 +1,30 @@
-import com.twitter.birdname._
+// staging mode.
+new BirdNameConfig {
+  serverPort = 9999
 
-new BirdNameServiceConfig {
-  // TODO: Please implement
+  admin.httpPort = 9900
+
+  admin.statsNodes = new StatsConfig {
+    reporters = new JsonStatsLoggerConfig {
+      loggerName = "stats"
+      serviceName = "birdname"
+    } :: new TimeSeriesCollectorConfig
+  }
+
+  loggers =
+    new LoggerConfig {
+      level = Level.INFO
+      handlers = new FileHandlerConfig {
+        filename = "/var/log/birdname/production.log"
+        roll = Policy.SigHup
+      }
+    } :: new LoggerConfig {
+      node = "stats"
+      level = Level.INFO
+      useParents = false
+      handlers = new FileHandlerConfig {
+        filename = "stats.log"
+        formatter = BareFormatterConfig
+      }
+    }
 }

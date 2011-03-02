@@ -11,7 +11,7 @@ class BirdNameConfig extends ServerConfig[BirdNameService] {
   var serverPort: Int = 9999
 
   def apply(runtime: RuntimeEnvironment) = {
-    val server = new BirdNameService(serverPort)
+    val server = new BirdNameServiceImpl(serverPort)
     ServiceTracker.register(server)
     server
   }

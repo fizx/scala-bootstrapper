@@ -2,14 +2,11 @@ package com.twitter.birdname
 
 import com.twitter.util._
 
-class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService {
+class BirdNameServiceImpl(port: Int) extends BirdNameService {
   val serverName = "BirdName"
-  val thriftPort = config.thriftPort
-  
-  // TODO: Please implement
-  
-  def hello() = {
-    Future("world")
-  }
+  val thriftPort = port
 
+  def get_name() = {
+    Future("Jabberwocky")
+  }
 }

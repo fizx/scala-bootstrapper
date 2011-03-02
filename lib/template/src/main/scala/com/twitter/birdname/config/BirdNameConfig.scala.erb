@@ -1,0 +1,18 @@
+package com.twitter.birdname
+package config
+
+import com.twitter.admin.{RuntimeEnvironment, ServiceTracker}
+import com.twitter.admin.config._
+import com.twitter.logging.Logger
+import com.twitter.config._
+import com.twitter.logging.config._
+
+class BirdNameConfig extends ServerConfig[BirdNameService] {
+  var serverPort: Int = 9999
+
+  def apply(runtime: RuntimeEnvironment) = {
+    val server = new BirdNameService(serverPort)
+    ServiceTracker.register(server)
+    server
+  }
+}

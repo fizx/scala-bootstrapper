@@ -3,7 +3,7 @@
 require "rubygems"
 require "thrift_client"
 $:.push('./target/gen-rb')
-require "funny_name_generator"
+require "birdname_service"
 
-client = ThriftClient.new(BirdName::BirdNameService::Client, "localhost:9999", :transport_wrapper => nil)
+client = ThriftClient.new(BirdName::BirdNameService::Client, "localhost:9999", :transport_wrapper => Thrift::FramedTransport)
 p client.get_name()

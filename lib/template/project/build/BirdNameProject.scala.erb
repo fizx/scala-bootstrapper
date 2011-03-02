@@ -3,7 +3,7 @@ import Process._
 import com.twitter.sbt._
 
 class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
-with CompileScalaWrappers with NoisyDependencies with DefaultRepos {
+with CompileScalaWrappers with NoisyDependencies with DefaultRepos with SubversionPublisher {
   val finagleC = "com.twitter" % "finagle-core" % "1.1.23"
   val finagleT = "com.twitter" % "finagle-thrift" % "1.1.23"
   val finagleO = "com.twitter" % "finagle-ostrich3" % "1.1.23"

@@ -6,7 +6,7 @@ class BirdNameServiceImpl(port: Int) extends BirdNameService {
   val serverName = "BirdName"
   val thriftPort = port
 
-  def get_name() = {
+  def getName() = {
     Future("Jabberwocky")
   }
 }

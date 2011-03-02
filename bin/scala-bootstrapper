@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-if ARGV.length < 1 
+if ARGV.length < 1
   puts "Usage: #{$0} [public] PROJECT_NAME"
   exit 1
 end
@@ -12,7 +12,7 @@ class String
     else
       self[0].chr.downcase + camelize(self)[1..-1]
     end
-  end    
+  end
 end
 
 def gsub_birds(haystack, name)

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scala-bootstrapper}
-  s.version = "0.5.0"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kyle Maxwell"]
-  s.date = %q{2011-03-02}
+  s.date = %q{2011-03-03}
   s.description = %q{Twitter scala project init}
   s.email = %q{kmaxwell@twitter.com}
   s.executables = ["sbt", "scala-bootstrapper"]

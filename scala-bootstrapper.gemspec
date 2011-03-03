@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scala-bootstrapper}
-  s.version = "0.4.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kyle Maxwell"]
-  s.date = %q{2011-03-01}
+  s.date = %q{2011-03-02}
   s.description = %q{Twitter scala project init}
   s.email = %q{kmaxwell@twitter.com}
   s.executables = ["sbt", "scala-bootstrapper"]
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "bin/sbt",
      "bin/scala-bootstrapper",
      "lib/template/.gitignore",
+     "lib/template/Capfile",
      "lib/template/Gemfile",
      "lib/template/bin/console.erb",
      "lib/template/config/development.scala.erb",
@@ -36,9 +37,9 @@ Gem::Specification.new do |s|
      "lib/template/project/build.properties",
      "lib/template/project/build/BirdNameProject.scala.erb",
      "lib/template/project/plugins/Plugins.scala.erb",
-     "lib/template/src/main/scala/com/twitter/birdname/BirdNameServiceConfig.scala.erb",
      "lib/template/src/main/scala/com/twitter/birdname/BirdNameServiceImpl.scala.erb",
      "lib/template/src/main/scala/com/twitter/birdname/Main.scala.erb",
+     "lib/template/src/main/scala/com/twitter/birdname/config/BirdNameServiceConfig.scala.erb",
      "lib/template/src/main/thrift/birdname.thrift.erb",
      "lib/template/src/test/scala/com/twitter/birdname/AbstractSpec.scala.erb",
      "lib/template/src/test/scala/com/twitter/birdname/BirdNameServiceSpec.scala.erb",

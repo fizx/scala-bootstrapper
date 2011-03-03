@@ -2,37 +2,34 @@ import sbt._
 import Process._
 import com.twitter.sbt._
 
-class BirdNameProject(info: ProjectInfo) extends StandardProject(info)
-                                            with CompileScalaWrappers
-                                            with SubversionPublisher
-                                            with NoisyDependencies
-                                            with DefaultRepos
-                                            with LibDirClasspath
-                                            with PackageDist
-                                            with AdhocInlines {
-                                              
-  val scalaTools = "org.scala-lang" % "scala-compiler" % "2.8.1"
+class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
+with CompileScalaWrappers with NoisyDependencies with DefaultRepos with SubversionPublisher {
 
-  val util    = "com.twitter" % "util" % "1.6.9"
+  val finagleVersion = "1.1.23"
+  val finagleC = "com.twitter" % "finagle-core" % finagleVersion
+  val finagleT = "com.twitter" % "finagle-thrift" % finagleVersion
+  val finagleO = "com.twitter" % "finagle-ostrich3" % finagleVersion
 
-  val finagleC  = "com.twitter" % "finagle-core" % "1.1.23"
-  val finagleT  = "com.twitter" % "finagle-thrift" % "1.1.23"
-  val finagleO  = "com.twitter" % "finagle-ostrich3" % "1.1.23"
+  val ostrich = "com.twitter" % "ostrich" % "3.0.6"
 
-  val ostrich  = "com.twitter" % "ostrich" % "3.0.5"
-  
+  // thrift
+  val libthrift = "thrift" % "libthrift" % "0.5.0"
   val slf4jVersion = "1.5.11"
   val slf4jApi = "org.slf4j" % "slf4j-api" % slf4jVersion withSources() intransitive()
   val slf4jBindings = "org.slf4j" % "slf4j-jdk14" % slf4jVersion withSources() intransitive()
 
-  val specs     = "org.scala-tools.testing" % "specs_2.8.1" % "1.6.7" % "test" withSources()
-  val jmock     = "org.jmock" % "jmock" % "2.4.0" % "test"
-  
   val scalaThriftTargetNamespace = "com.twitter.birdname"
   val rubyThriftNamespace = "BirdName"
-  
+
+  // for tests
+  val specs = "org.scala-tools.testing" % "specs_2.8.1" % "1.6.7" % "test" withSources()
+  val jmock = "org.jmock" % "jmock" % "2.4.0" % "test"
+  val hamcrest_all = "org.hamcrest" % "hamcrest-all" % "1.1" % "test"
+  val cglib = "cglib" % "cglib" % "2.1_3" % "test"
+  val asm = "asm" % "asm" % "1.5.3" % "test"
+  val objenesis = "org.objenesis" % "objenesis" % "1.1" % "test"
+
   override def mainClass = Some("com.twitter.birdname.Main")
-  
-  
+
   override def subversionRepository = Some("http://svn.local.twitter.com/maven<%= '-public' if is_public %>")
 }

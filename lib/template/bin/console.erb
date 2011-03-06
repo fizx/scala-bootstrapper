@@ -13,8 +13,8 @@ class BirdNameClient < ThriftClient
   DEFAULTS = { :transport_wrapper => Thrift::FramedTransport }
   def initialize(servers = nil, options = {})
     if servers.nil? or servers.empty?
-      STDERR.puts "No servers specified, using 127.0.0.1:13007"
-      servers = ['127.0.0.1:13007']
+      STDERR.puts "No servers specified, using 127.0.0.1:9999"
+      servers = ['127.0.0.1:9999']
     else
       servers = Array(servers)
     end

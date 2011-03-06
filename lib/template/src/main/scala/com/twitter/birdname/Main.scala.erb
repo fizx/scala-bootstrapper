@@ -5,8 +5,8 @@ import com.twitter.admin._
 object Main {
   def main(args: Array[String]) {
     val env = RuntimeEnvironment(this, args)
-    val impl = env.loadRuntimeConfig[BirdNameService]
-    impl.start()
+    val service = env.loadRuntimeConfig[BirdNameService]
+    service.start()
   }
 }
 

@@ -1,7 +1,8 @@
 package com.twitter.birdname
 
-import com.twitter.util._
 import java.util.concurrent.Executors
+import scala.collection.mutable
+import com.twitter.util._
 import config._
 
 class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService {
@@ -22,11 +23,18 @@ class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService
    *     }
    * 
    */   
-    
-  // TODO: Please implement your api.  You should have already created your thrift definition.
-  
-  def hello() = {
-    Future("world")
+
+  val database = new mutable.HashMap[String, String]()  
+
+  def get(key: String) = {
+    database.get(key) match {
+      case None => Future.exception(new BirdNameException("No such key"))
+      case Some(value) => Future(value)
+    }
   }
 
+  def put(key: String, value: String) = {
+    database(key) = value
+    Future.void
+  }
 }

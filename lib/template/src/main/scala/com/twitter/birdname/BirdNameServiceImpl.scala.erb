@@ -2,10 +2,13 @@ package com.twitter.birdname
 
 import java.util.concurrent.Executors
 import scala.collection.mutable
+import com.twitter.logging.Logger
 import com.twitter.util._
 import config._
 
 class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService {
+  val log = Logger.get(getClass)
+
   val serverName = "BirdName"
   val thriftPort = config.thriftPort
   
@@ -28,12 +31,17 @@ class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService
 
   def get(key: String) = {
     database.get(key) match {
-      case None => Future.exception(new BirdNameException("No such key"))
-      case Some(value) => Future(value)
+      case None =>
+        log.debug("get %s: miss", key)
+        Future.exception(new BirdNameException("No such key"))
+      case Some(value) =>
+        log.debug("get %s: hit", key)
+        Future(value)
     }
   }
 
   def put(key: String, value: String) = {
+    log.debug("put %s")
     database(key) = value
     Future.void
   }

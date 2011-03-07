@@ -65,7 +65,6 @@ case "$1" in
       exit 0
     fi
     
-    ulimit -n 32768 || echo -n " (no ulimit)"
     ulimit -c unlimited || echo -n " (no coredump)"
     $DAEMON $daemon_args $daemon_start_args -- sh -c "echo "'$$'" > $pidfile; exec ${JAVA_HOME}/bin/java ${JAVA_OPTS} -jar ${APP_HOME}/${JAR_NAME}"
     tries=0

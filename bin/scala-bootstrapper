@@ -4,13 +4,13 @@ require File.dirname(__FILE__) + "/../vendor/trollop"
 
 opts = Trollop::options do
   banner "Usage: #{$0} [options] PROJECT_NAME"
-  
-  opt :public, "Use the public twitter maven repo"  
+
+  opt :public, "Use the public twitter maven repo"
   opt :namespace, "Use something besides com.twitter", :type => :string
 end
 
 
-if ARGV.length < 1 
+if ARGV.length < 1
   Trollop::die "PROJECT_NAME is required"
   exit 1
 end
@@ -22,7 +22,7 @@ class String
     else
       self[0].chr.downcase + camelize(self)[1..-1]
     end
-  end    
+  end
   def underscore
     self.gsub(/::/, '/').
     gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').

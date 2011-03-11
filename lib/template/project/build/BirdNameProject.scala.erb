@@ -3,23 +3,23 @@ import Process._
 import com.twitter.sbt._
 
 class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
-with CompileScalaWrappers with NoisyDependencies with DefaultRepos with SubversionPublisher {
+with CompileThriftScala with NoisyDependencies with DefaultRepos with SubversionPublisher {
 
-  val finagleVersion = "1.1.23"
+  val finagleVersion = "1.2.1"
   val finagleC = "com.twitter" % "finagle-core" % finagleVersion
   val finagleT = "com.twitter" % "finagle-thrift" % finagleVersion
-  val finagleO = "com.twitter" % "finagle-ostrich3" % finagleVersion
-
-  val ostrich = "com.twitter" % "ostrich" % "3.0.6"
+  val finagleO = "com.twitter" % "finagle-ostrich4" % finagleVersion
 
   // thrift
   val libthrift = "thrift" % "libthrift" % "0.5.0"
+  val util    = "com.twitter" % "util" % "1.8.0"
+
+  override def originalThriftNamespaces = Map("BirdName" -> "com.twitter.birdname.thrift")
+  val scalaThriftTargetNamespace = "com.twitter.birdname"
+  
   val slf4jVersion = "1.5.11"
   val slf4jApi = "org.slf4j" % "slf4j-api" % slf4jVersion withSources() intransitive()
   val slf4jBindings = "org.slf4j" % "slf4j-jdk14" % slf4jVersion withSources() intransitive()
-
-  val scalaThriftTargetNamespace = "com.twitter.birdname"
-  val rubyThriftNamespace = "BirdName"
 
   // for tests
   val specs = "org.scala-tools.testing" % "specs_2.8.1" % "1.6.7" % "test" withSources()

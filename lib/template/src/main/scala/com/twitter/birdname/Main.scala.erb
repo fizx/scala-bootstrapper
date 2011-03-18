@@ -1,11 +1,11 @@
 package com.twitter.birdname
 
-import com.twitter.admin._
+import com.twitter.ostrich.admin._
 
 object Main {
   def main(args: Array[String]) {
     val env = RuntimeEnvironment(this, args)
-    val service = env.loadRuntimeConfig[BirdNameService]
+    val service = env.loadRuntimeConfig[BirdNameServiceServer]
     service.start()
   }
 }

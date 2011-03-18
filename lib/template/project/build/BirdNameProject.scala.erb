@@ -2,9 +2,19 @@ import sbt._
 import Process._
 import com.twitter.sbt._
 
+/**
+ * Sbt project files are written in a DSL in scala.
+ *
+ * The % operator is just turning strings into maven dependency declarations, so lines like
+ *     val example = "com.example" % "exampleland" % "1.0.3"
+ * mean to add a dependency on exampleland version 1.0.3 from provider "com.example".
+ */
 class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
-with CompileThriftScala with NoisyDependencies with DefaultRepos with SubversionPublisher {
-
+  with CompileThriftScala
+  with NoisyDependencies
+  with DefaultRepos
+  with SubversionPublisher
+{
   val finagleVersion = "1.2.1"
   val finagleC = "com.twitter" % "finagle-core" % finagleVersion
   val finagleT = "com.twitter" % "finagle-thrift" % finagleVersion
@@ -12,7 +22,6 @@ with CompileThriftScala with NoisyDependencies with DefaultRepos with Subversion
 
   // thrift
   val libthrift = "thrift" % "libthrift" % "0.5.0"
-  val util    = "com.twitter" % "util" % "1.8.0"
 
   override def originalThriftNamespaces = Map("BirdName" -> "com.twitter.birdname.thrift")
   val scalaThriftTargetNamespace = "com.twitter.birdname"

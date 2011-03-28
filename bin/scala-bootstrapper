@@ -77,3 +77,8 @@ end
 if File.exists?("src/scripts/startup.sh")
   `mv src/scripts/startup.sh src/scripts/#{project_name.downcase}.sh`
 end
+
+[ "src/scripts/#{project_name.downcase}.sh", "src/scripts/console", "run" ].foreach do |executable|
+  `chmod +x #{executable}` if File.exists?(executable)
+end
+

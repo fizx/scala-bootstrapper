@@ -2,12 +2,25 @@ import sbt._
 import Process._
 import com.twitter.sbt._
 
-class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
-with CompileThriftScala with NoisyDependencies with DefaultRepos with SubversionPublisher {
+/**
+ * Sbt project files are written in a DSL in scala.
+ *
+ * The % operator is just turning strings into maven dependency declarations, so lines like
+ *     val example = "com.example" % "exampleland" % "1.0.3"
+ * mean to add a dependency on exampleland version 1.0.3 from provider "com.example".
+ */
+class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info) 
+      with CompileThriftScala 
+      with NoisyDependencies 
+      with DefaultRepos 
+      with Tartifactory
+      with TartifactoryRepos
+      with SubversionPublisher {
   
   val twitterInternal = "binaries.local.twitter.com" at "http://binaries.local.twitter.com/maven/"
 
   val finagleVersion = "1.2.5"
+
   val finagleC = "com.twitter" % "finagle-core" % finagleVersion
   val finagleT = "com.twitter" % "finagle-thrift" % finagleVersion
   val finagleO = "com.twitter" % "finagle-ostrich4" % finagleVersion

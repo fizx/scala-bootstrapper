@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2011-03-29}
   s.description = %q{Twitter scala project init}
   s.email = %q{kmaxwell@twitter.com}
-  s.executables = ["HACKING", "sbt", "scala-bootstrapper"]
+  s.executables = ["sbt", "scala-bootstrapper"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -20,11 +20,11 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "HACKING",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "bin/HACKING",
      "bin/sbt",
      "bin/scala-bootstrapper",
      "lib/template/.gitignore",

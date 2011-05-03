@@ -10,4 +10,5 @@ scala-bootstrapper README.rdoc file.
 
 # Documenting your project
 
-...
+Add documentation here!  Eventually, you'll be able to publish this to
+a web site for the world to easily find and read.

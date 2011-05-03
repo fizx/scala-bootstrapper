@@ -149,6 +149,8 @@ TODO: add link to scala school lesson on SBT
 ### Take a tour of the logs our service is producing.
 
 ### Add command-line parameters for your service.
+-D foo=bar
+runtime.arguments.get("foo")
 
 ### Storage: let's persist the data in Cassandra!
 

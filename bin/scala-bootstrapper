@@ -61,6 +61,9 @@ $branch = 'master'
 
 if git
   if !File.exists?('.git')
+    if `ls -l` != ''
+      abort('files in directory, no git repo.')
+    end
     sys('git init')
     sys("echo 'Project #{project_name}' > README")
     sys('git add .')
@@ -68,6 +71,9 @@ if git
     sys('git co -b scala-bootstrapper')
 
   else
+    if `git ls-files -mdo` != ''
+      abort('uncommitted files in directory')
+    end
     $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
 
     if !system('git co scala-bootstrapper')

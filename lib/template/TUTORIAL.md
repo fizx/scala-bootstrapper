@@ -21,6 +21,14 @@ or you can ask sbt to run your service:
 
     $ sbt 'run -f config/development.scala'
 
+### View the Thrift IDL for your service
+
+The IDL for your service is in src/main/thrift/birdname.thrift.  The
+Thrift compiler uses the IDL to generate bindings for various
+languages, making it easy for scripts in those languages to talk to
+your service.  More information about Thrift and how to write an IDL
+for your service can be found [here](http://wiki.apache.org/thrift/Tutorial)
+
 ### Call your service from ruby
 
 Your service implements simple get() and put() methods.  Once you have
@@ -32,14 +40,6 @@ your server running, as above, bring up a different shell and:
     $ $client
     $ $client.put("key1", "valueForKey")
     $ $client.get("key1")
-
-### View the Thrift IDL for your service
-
-The IDL for your service is in src/main/thrift/birdname.thrift.  The
-Thrift compiler uses the IDL to generate bindings for various
-languages, making it easy for scripts in those languages to talk to
-your service.  More information about Thrift and how to write an IDL
-for your service can be found [here](http://wiki.apache.org/thrift/Tutorial)
 
 ### Look at the stats for your service
 
@@ -91,7 +91,10 @@ your stats:
 You can also time various things that your server is doing, for
 example:
 
-    Stats.time("birdname.put.latency){ database(key) = value }
+    Stats.time("birdname.put.latency") {
+      Thread.sleep(10) // so you can see it
+      database(key) = value
+    }
 
 ### Specs: let's add some tests
 

@@ -57,6 +57,7 @@ namespace = opts[:namespace] || "com.twitter"
 git = opts[:git]
 $overwrite_all = true if git
 $ex_post_facto = false
+$branch = 'master'
 
 if git
   if !File.exists?('.git')
@@ -67,6 +68,8 @@ if git
     sys('git co -b scala-bootstrapper')
 
   else
+    $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
+
     if !system('git co scala-bootstrapper')
       $ex_post_facto = true
       sys('git co -b scala-bootstrapper')
@@ -112,7 +115,7 @@ end
 if git
   sys('git add .')
   sys("git commit -m'scala-bootstrapper'")
-  sys("git checkout master")
+  sys("git checkout #{$branch}")
   sys('git merge --no-ff --no-commit scala-bootstrapper')
 
   if $ex_post_facto

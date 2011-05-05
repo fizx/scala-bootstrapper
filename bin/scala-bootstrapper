@@ -71,8 +71,8 @@ if git
     sys('git co -b scala-bootstrapper')
 
   else
-    if `git ls-files -mdo` != ''
-      abort('uncommitted files in directory')
+    if `git status -s` != ''
+      abort('uncommitted files in directory.')
     end
     $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
 

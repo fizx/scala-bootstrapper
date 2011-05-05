@@ -114,7 +114,7 @@ end
 
 if git
   sys('git add .')
-  sys("git commit -m'scala-bootstrapper'")
+  system("git commit -m'scala-bootstrapper'") # fails if no change
   sys("git checkout #{$branch}")
   sys('git merge --no-ff --no-commit scala-bootstrapper')
 
@@ -125,5 +125,5 @@ if git
     sys('git clean -fdx')
   end
 
-  sys("git commit -m'merged scala-bootstrapper'")
+  system("git commit -m'merged scala-bootstrapper'") # fails if no change
 end

@@ -58,6 +58,7 @@ git = opts[:git]
 $overwrite_all = true if git
 $ex_post_facto = false
 $branch = 'master'
+$files = []
 
 if git
   if !File.exists?('.git')
@@ -108,10 +109,13 @@ Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
   puts "writing #{target_path}"
   mkdir_p(File.dirname(target_path))
   File.open(target_path, "w") {|f| f.print(gsub_birds(template.result(binding), project_name, namespace)) }
+  $files << target_path
 end
 
 if File.exists?("src/scripts/startup.sh")
-  `mv src/scripts/startup.sh src/scripts/#{project_name.downcase}.sh`
+  startup = "src/scripts/#{project_name.downcase}.sh"
+  `mv src/scripts/startup.sh #{startup}`
+  $files << startup
 end
 
 [ "src/scripts/#{project_name.downcase}.sh", "src/scripts/console", "run" ].each do |executable|
@@ -119,7 +123,7 @@ end
 end
 
 if git
-  sys('git add .')
+  $files.each { |file| sys("git add #{file}") if File.exists?(file) }
   system("git commit -m'scala-bootstrapper'") # fails if no change
   sys("git checkout #{$branch}")
   sys('git merge --no-ff --no-commit scala-bootstrapper')

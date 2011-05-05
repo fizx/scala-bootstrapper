@@ -44,7 +44,7 @@ def gsub_birds(haystack, name, namespace)
 end
 
 def sys(cmd)
-  system(cmd) || abort
+  system(cmd) || abort("failed: #{cmd}")
 end
 
 require "erb"
@@ -56,20 +56,37 @@ is_public = opts[:public]
 namespace = opts[:namespace] || "com.twitter"
 git = opts[:git]
 $overwrite_all = true if git
-$first_time = false
+$ex_post_facto = false
+$branch = 'master'
 
 if git
-  if !system('git checkout scala-bootstrapper')
-    $first_time = true
-    sys('git branch scala-bootstrapper master')
-    sys('git checkout scala-bootstrapper')
-    # clean out any existing files on branch
-    sys('rm .git/index')
-    sys('git clean -fdx')
+  if !File.exists?('.git')
+    if `ls -l` != ''
+      abort('files in directory, no git repo.')
+    end
+    sys('git init')
+    sys("echo 'Project #{project_name}' > README")
+    sys('git add .')
+    sys("git commit -m'first commit'")
+    sys('git co -b scala-bootstrapper')
+
+  else
+    if `git ls-files -mdo` != ''
+      abort('uncommitted files in directory')
+    end
+    $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
+
+    if !system('git co scala-bootstrapper')
+      $ex_post_facto = true
+      sys('git co -b scala-bootstrapper')
+      # clean out any existing files on branch
+      sys('rm .git/index')
+      sys('git clean -fdx')
+    end
   end
 end
 
- root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
+root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
 
 Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
   relative = path.sub("#{root}/", "")
@@ -102,23 +119,17 @@ end
 end
 
 if git
-  if $first_time
-    sys('git add .')
-    sys("git commit -m 'scala-bootstrapper'")
-    sys('git checkout master')
-    $ex_post_facto = `git ls-files Capfile` != ''
-    sys('git merge --no-ff --no-commit scala-bootstrapper')
-    if $ex_post_facto
-      # don't commit anything, just make scala-bootstrapper head a parent
-      sys('rm .git/index')
-      sys('git checkout HEAD .')
-      sys('git clean -fdx')
-    end
-    sys("git commit -m'merged scala-bootstrapper'")
-  else
-    sys('git add .')
-    sys("git commit -m 'scala-bootstrapper'")
-    sys('git checkout master')
-    sys("git merge --no-ff scala-bootstrapper -m 'merged scala-bootstrapper'")
+  sys('git add .')
+  system("git commit -m'scala-bootstrapper'") # fails if no change
+  sys("git checkout #{$branch}")
+  sys('git merge --no-ff --no-commit scala-bootstrapper')
+
+  if $ex_post_facto
+    # don't commit anything, just make scala-bootstrapper head a parent
+    sys('rm .git/index')
+    sys('git checkout HEAD .')
+    sys('git clean -fdx')
   end
+
+  system("git commit -m'merged scala-bootstrapper'") # fails if no change
 end

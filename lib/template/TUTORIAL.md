@@ -34,7 +34,7 @@ for your service can be found [here](http://wiki.apache.org/thrift/Tutorial)
 Your service implements simple get() and put() methods.  Once you have
 your server running, as above, bring up a different shell and:
 
-    $ gem install thrift_client
+    $ bundle install
     $ cd birdname
     $ ./src/scripts/console
     $ $client

@@ -27,7 +27,7 @@ For an existing project, this will generate files into the
 *without* actually taking the changes (just making
 <tt>scala-bootstrapper</tt> a parent of the current branch to anchor
 future merges). This is to avoid clobbering files if you had
-previously run <tt>scala-bootstrapper</t> without the <tt>--git</tt>
+previously run <tt>scala-bootstrapper</tt> without the <tt>--git</tt>
 option (or created files some other way). If you want to merge the
 changes and manually resolve any conflicts, do
 

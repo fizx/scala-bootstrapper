@@ -134,3 +134,19 @@ if git
 
   system("git commit -m'merged scala-bootstrapper'") # fails if no change
 end
+
+if $ex_post_facto
+  puts <<EOF
+Found existing .git directory; scala-bootstrapper branch created but
+generated files not merged to #{$branch}. To manually merge changes,
+run
+
+  git cherry-pick --no-commit scala-bootstrapper
+
+then
+
+  git commit
+
+once you have resolved any conflicts.
+EOF
+end

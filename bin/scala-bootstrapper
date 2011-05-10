@@ -43,8 +43,8 @@ def gsub_birds(haystack, name, namespace)
     gsub("com/twitter", namespace.gsub(".", "/"))
 end
 
-def sys(cmd)
-  system(cmd) || abort("failed: #{cmd}")
+def sys(cmd, abort_on_fail=true)
+  system(cmd + " &> /dev/null") || abort_on_fail && abort("failed: #{cmd}")
 end
 
 require "erb"
@@ -77,7 +77,7 @@ if git
     end
     $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
 
-    if !system('git co scala-bootstrapper')
+    if !sys('git co scala-bootstrapper', false)
       $ex_post_facto = true
       sys('git co -b scala-bootstrapper')
     end
@@ -121,7 +121,7 @@ end
 
 if git
   $files.each { |file| sys("git add #{file}") if File.exists?(file) }
-  system("git commit -m'scala-bootstrapper'") # fails if no change
+  sys("git commit -m'scala-bootstrapper'", false) # fails if no change
   sys("git checkout #{$branch}")
   sys('git merge --no-ff --no-commit scala-bootstrapper')
 
@@ -132,7 +132,7 @@ if git
     sys('git clean -fdx')
   end
 
-  system("git commit -m'merged scala-bootstrapper'") # fails if no change
+  sys("git commit -m'merged scala-bootstrapper'", false) # fails if no change
 end
 
 if $ex_post_facto

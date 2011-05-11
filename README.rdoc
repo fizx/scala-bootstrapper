@@ -6,3 +6,9 @@ Usage:
     :$ cd foo
     :$ scala-bootstrapper foo
     :$ sbt update test
+
+If you want to track scala-bootstrapper generated files in Git:
+
+    :$ scala-bootstrapper --git foo
+
+To update files (with a new version of scala-bootstrapper), just run it again.

@@ -38,7 +38,7 @@ class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService
   }
 
   def put(key: String, value: String) = {
-    log.debug("put %s")
+    log.debug("put %s", key)
     database(key) = value
     Future.void
   }

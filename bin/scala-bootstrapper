@@ -7,6 +7,7 @@ opts = Trollop::options do
 
   opt :public, "Use the public twitter maven repo"
   opt :namespace, "Use something besides com.twitter", :type => :string
+  opt :git, "Use Git to track updates to generated files"
 end
 
 
@@ -42,6 +43,10 @@ def gsub_birds(haystack, name, namespace)
     gsub("birdName", name.camelize)
 end
 
+def sys(cmd)
+  system(cmd) || abort("failed: #{cmd}")
+end
+
 require "erb"
 require "fileutils"
 include FileUtils
@@ -49,6 +54,37 @@ include FileUtils
 project_name = ARGV.pop.camelize(true)
 is_public = opts[:public]
 namespace = opts[:namespace] || "com.twitter"
+git = opts[:git]
+$overwrite_all = true if git
+$ex_post_facto = false
+$branch = 'master'
+
+if git
+  if !File.exists?('.git')
+    if `ls -l` != ''
+      abort('files in directory, no git repo.')
+    end
+    sys('git init')
+    sys("echo 'Project #{project_name}' > README")
+    sys('git add .')
+    sys("git commit -m'first commit'")
+    sys('git co -b scala-bootstrapper')
+
+  else
+    if `git ls-files -mdo` != ''
+      abort('uncommitted files in directory')
+    end
+    $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
+
+    if !system('git co scala-bootstrapper')
+      $ex_post_facto = true
+      sys('git co -b scala-bootstrapper')
+      # clean out any existing files on branch
+      sys('rm .git/index')
+      sys('git clean -fdx')
+    end
+  end
+end
 
 root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
 
@@ -82,3 +118,18 @@ end
   `chmod +x #{executable}` if File.exists?(executable)
 end
 
+if git
+  sys('git add .')
+  system("git commit -m'scala-bootstrapper'") # fails if no change
+  sys("git checkout #{$branch}")
+  sys('git merge --no-ff --no-commit scala-bootstrapper')
+
+  if $ex_post_facto
+    # don't commit anything, just make scala-bootstrapper head a parent
+    sys('rm .git/index')
+    sys('git checkout HEAD .')
+    sys('git clean -fdx')
+  end
+
+  system("git commit -m'merged scala-bootstrapper'") # fails if no change
+end

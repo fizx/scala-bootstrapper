@@ -69,7 +69,7 @@ if git
     sys('touch README.md')
     sys('git add .')
     sys("git commit -m'first commit'")
-    sys('git co -b scala-bootstrapper')
+    sys('git checkout -b scala-bootstrapper')
 
   else
     if `git status -s` != ''
@@ -77,9 +77,9 @@ if git
     end
     $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
 
-    if !sys('git co scala-bootstrapper', false)
+    if !sys('git checkout scala-bootstrapper', false)
       $ex_post_facto = true
-      sys('git co -b scala-bootstrapper')
+      sys('git checkout -b scala-bootstrapper')
     end
   end
 end

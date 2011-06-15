@@ -36,7 +36,7 @@ your server running, as above, bring up a different shell and:
 
     $ cd birdname
     $ bundle install
-    $ ./src/scripts/console
+    $ ./dist/birdname/scripts/console
     $ $client
     $ $client.put("key1", "valueForKey")
     $ $client.get("key1")

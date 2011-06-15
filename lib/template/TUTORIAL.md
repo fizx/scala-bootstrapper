@@ -34,8 +34,8 @@ for your service can be found [here](http://wiki.apache.org/thrift/Tutorial)
 Your service implements simple get() and put() methods.  Once you have
 your server running, as above, bring up a different shell and:
 
-    $ bundle install
     $ cd birdname
+    $ bundle install
     $ ./src/scripts/console
     $ $client
     $ $client.put("key1", "valueForKey")

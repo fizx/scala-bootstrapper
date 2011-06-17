@@ -26,7 +26,7 @@ or you can ask sbt to run your service:
 The java/sbt command-lines will "hang" because the server is running in the
 foreground. (In production, we use libslack-daemon to wrap java processes into
 unix daemons.) Go to another terminal and check for a logfile. If your server
-is named "memcache", there should be a `memcache.log` with contents like this:
+is named "birdname", there should be a `birdname.log` with contents like this:
 
     INF [20110615-14:05:41.656] stats: Starting JsonStatsLogger
     INF [20110615-14:05:41.674] admin: Starting TimeSeriesCollector
@@ -64,9 +64,9 @@ requests. You can view the stats via that port:
 
     $ curl localhost:9900/stats.txt
     counters:
-      Nho2/connects: 1
-      Nho2/requests: 2
-      Nho2/success: 2
+      BirdName/connects: 1
+      BirdName/requests: 2
+      BirdName/success: 2
     ...
 
 Ostrich also stores historial stats data and can build
@@ -81,8 +81,8 @@ You can ask the server to shutdown over the admin port also:
 
 ### View the implementation of get() and put()
 
-In `src/main/scala`, take a look at `BirdNameServiceImpl.scala`. This will
-probably have a different name, based on what you called your server.
+In `src/main/scala`, take a look at `BirdNameServiceImpl.scala`. (This may
+have a different name, based on what you called your server.)
 
 The base interface is specified by thrift. Additionally, we're using Twitter's
 async I/O framework: finagle. Finagle (and a lot of great documentation about

@@ -21,13 +21,26 @@ or you can ask sbt to run your service:
 
     $ sbt 'run -f config/development.scala'
 
+### Verify that the service is running
+
+The java/sbt command-lines will "hang" because the server is running in the
+foreground. (In production, we use libslack-daemon to wrap java processes into
+unix daemons.) Go to another terminal and check for a logfile. If your server
+is named "memcache", there should be a `memcache.log` with contents like this:
+
+    INF [20110615-14:05:41.656] stats: Starting JsonStatsLogger
+    INF [20110615-14:05:41.674] admin: Starting TimeSeriesCollector
+    DEB [20110615-14:05:41.792] nio: Using the autodetected NIO constraint level: 0
+
+That's your indication that the server is running. :)
+
 ### View the Thrift IDL for your service
 
-The IDL for your service is in src/main/thrift/birdname.thrift.  The
+The IDL for your service is in `src/main/thrift/birdname.thrift`.  The
 Thrift compiler uses the IDL to generate bindings for various
 languages, making it easy for scripts in those languages to talk to
 your service.  More information about Thrift and how to write an IDL
-for your service can be found [here](http://wiki.apache.org/thrift/Tutorial)
+for your service can be found [here](http://wiki.apache.org/thrift/Tutorial).
 
 ### Call your service from ruby
 
@@ -37,17 +50,17 @@ your server running, as above, bring up a different shell and:
     $ cd birdname
     $ bundle install
     $ ./dist/birdname/scripts/console
-    $ $client
-    $ $client.put("key1", "valueForKey")
-    $ $client.get("key1")
+    >> $client
+    >> $client.put("key1", "valueForKey")
+    >> $client.get("key1")
 
 ### Look at the stats for your service
 
 By default, your project is configured to use
 [Ostrich](https://github.com/twitter/ostrich), a library for service
-configuration, administration, and stats reporting.  Your config file
-in config/development.scala defines which port ostrich uses for admin
-requests.  You can view the stats via that port:
+configuration, administration, and stats reporting. Your config file
+in `config/development.scala` defines which port ostrich uses for admin
+requests. You can view the stats via that port:
 
     $ curl localhost:9900/stats.txt
     counters:
@@ -59,9 +72,21 @@ requests.  You can view the stats via that port:
 Ostrich also stores historial stats data and can build
 [graphs](http://localhost:9900/graph/) for you.
 
+### Stop the service
+
+You can ask the server to shutdown over the admin port also:
+
+    $ curl localhost:9990/shutdown.txt
+    ok
+
 ### View the implementation of get() and put()
 
-Take a look at src/main/scala/com/twitter/birdname/BirdNameServiceImpl.scala.
+In `src/main/scala`, take a look at `BirdNameServiceImpl.scala`. This will
+probably have a different name, based on what you called your server.
+
+The base interface is specified by thrift. Additionally, we're using Twitter's
+async I/O framework: finagle. Finagle (and a lot of great documentation about
+it) is hosted here: https://github.com/twitter/finagle
 
 ### Try adding some timers and counters
 

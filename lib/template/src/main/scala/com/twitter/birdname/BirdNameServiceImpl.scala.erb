@@ -24,7 +24,8 @@ class BirdNameServiceImpl(config: BirdNameServiceConfig) extends BirdNameService
    *
    */
 
-  val database = new mutable.HashMap[String, String]()
+  val database = new mutable.HashMap[String, String]
+    with mutable.SynchronizedMap[String, String]
 
   def get(key: String) = {
     database.get(key) match {

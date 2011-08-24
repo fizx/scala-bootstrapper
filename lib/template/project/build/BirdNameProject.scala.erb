@@ -14,18 +14,22 @@ class BirdNameProject(info: ProjectInfo) extends StandardServiceProject(info)
   with NoisyDependencies
   with DefaultRepos
   with SubversionPublisher
+  with PublishSourcesAndJavadocs
+  with PublishSite
 {
-  val finagleVersion = "1.2.1"
+  val finagleVersion = "1.8.4"
+
   val finagleC = "com.twitter" % "finagle-core" % finagleVersion
   val finagleT = "com.twitter" % "finagle-thrift" % finagleVersion
   val finagleO = "com.twitter" % "finagle-ostrich4" % finagleVersion
 
   // thrift
   val libthrift = "thrift" % "libthrift" % "0.5.0"
+  val util = "com.twitter" % "util" % "1.11.2"
 
   override def originalThriftNamespaces = Map("BirdName" -> "com.twitter.birdname.thrift")
-  val scalaThriftTargetNamespace = "com.twitter.birdname"
-  
+  override val scalaThriftTargetNamespace = "com.twitter.birdname"
+
   val slf4jVersion = "1.5.11"
   val slf4jApi = "org.slf4j" % "slf4j-api" % slf4jVersion withSources() intransitive()
   val slf4jBindings = "org.slf4j" % "slf4j-jdk14" % slf4jVersion withSources() intransitive()

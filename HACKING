@@ -1,0 +1,1 @@
+When you make changes to this project, please test by bootstrapping a new project and running `sbt update test` there.

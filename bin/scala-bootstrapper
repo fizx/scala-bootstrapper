@@ -7,6 +7,7 @@ opts = Trollop::options do
 
   opt :public, "Use the public twitter maven repo"
   opt :namespace, "Use something besides com.twitter", :type => :string
+  opt :git, "Use Git to track updates to generated files"
 end
 
 
@@ -34,12 +35,16 @@ end
 
 def gsub_birds(haystack, name, namespace)
   haystack.
+    gsub("com.twitter.birdname", "#{namespace}.#{name.downcase}").
+    gsub("com/twitter/birdname", "#{namespace.gsub('.', '/')}/#{name.downcase}").
     gsub("BirdName", name).
     gsub("birdname", name.downcase).
     gsub("bird_name", name.underscore).
-    gsub("birdName", name.camelize).
-    gsub("com.twitter", namespace).
-    gsub("com/twitter", namespace.gsub(".", "/"))
+    gsub("birdName", name.camelize)
+end
+
+def sys(cmd, abort_on_fail=true)
+  system(cmd + " &> /dev/null") || abort_on_fail && abort("failed: #{cmd}")
 end
 
 require "erb"
@@ -49,6 +54,35 @@ include FileUtils
 project_name = ARGV.pop.camelize(true)
 is_public = opts[:public]
 namespace = opts[:namespace] || "com.twitter"
+git = opts[:git]
+$overwrite_all = true if git
+$ex_post_facto = false
+$branch = 'master'
+$files = []
+
+if git
+  if !File.exists?('.git')
+    if `ls -l` != ''
+      abort('files in directory, no git repo.')
+    end
+    sys('git init')
+    sys('touch README.md')
+    sys('git add .')
+    sys("git commit -m'first commit'")
+    sys('git checkout -b scala-bootstrapper')
+
+  else
+    if `git status -s` != ''
+      abort('uncommitted files in directory.')
+    end
+    $branch = `git branch`.grep(/^\*/).first.chomp.gsub(/^\* (.+)$/, '\1')
+
+    if !sys('git checkout scala-bootstrapper', false)
+      $ex_post_facto = true
+      sys('git checkout -b scala-bootstrapper')
+    end
+  end
+end
 
 root = File.expand_path(File.dirname(__FILE__) + "/../lib/template")
 
@@ -72,8 +106,47 @@ Dir["#{root}/**/*"].select{|path| File.file?(path)}.each do |path|
   puts "writing #{target_path}"
   mkdir_p(File.dirname(target_path))
   File.open(target_path, "w") {|f| f.print(gsub_birds(template.result(binding), project_name, namespace)) }
+  $files << target_path
 end
 
 if File.exists?("src/scripts/startup.sh")
-  `mv src/scripts/startup.sh src/scripts/#{project_name.downcase}.sh`
+  startup = "src/scripts/#{project_name.downcase}.sh"
+  `mv src/scripts/startup.sh #{startup}`
+  $files << startup
+end
+
+[ "src/scripts/#{project_name.downcase}.sh", "src/scripts/console", "run" ].each do |executable|
+  `chmod +x #{executable}` if File.exists?(executable)
+end
+
+if git
+  $files.each { |file| sys("git add #{file}") if File.exists?(file) }
+  sys("git commit -m'scala-bootstrapper'", false) # fails if no change
+  sys("git checkout #{$branch}")
+  sys('git merge --no-ff --no-commit scala-bootstrapper')
+
+  if $ex_post_facto
+    # don't commit anything, just make scala-bootstrapper head a parent
+    sys('rm .git/index')
+    sys('git checkout HEAD .')
+    sys('git clean -fdx')
+  end
+
+  sys("git commit -m'merged scala-bootstrapper'", false) # fails if no change
+end
+
+if $ex_post_facto
+  puts <<EOF
+Found existing .git directory; scala-bootstrapper branch created but
+generated files not merged to #{$branch}. To manually merge changes,
+run
+
+  git cherry-pick --no-commit scala-bootstrapper
+
+then
+
+  git commit
+
+once you have resolved any conflicts.
+EOF
 end
